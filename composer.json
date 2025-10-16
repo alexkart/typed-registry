@@ -1,5 +1,5 @@
 {
-  "name": "typed-registry/typed-registry",
+  "name": "alexkart/typed-registry",
   "description": "Dependency-free typed facade over mixed registries/config sources for PHPStan-level codebases.",
   "type": "library",
   "license": "MIT",
@@ -36,8 +36,8 @@
     "optimize-autoloader": true
   },
   "suggest": {
-    "typed-registry/psl": "Optional adapter for shape/union types & coercion (future).",
-    "typed-registry/webmozart": "Optional adapter for assertion-based guards (future)."
+    "alexkart/typed-registry-psl": "Optional adapter for shape/union types & coercion (future).",
+    "alexkart/typed-registry-webmozart": "Optional adapter for assertion-based guards (future)."
   },
   "scripts": {
     "test": "phpunit",
