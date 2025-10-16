@@ -212,6 +212,12 @@ final class TypedRegistryTest extends TestCase
         self::assertSame(99, $registry->getIntOr('key', 99));
     }
 
+    public function testGetIntOrReturnsDefaultOnTypeMismatch(): void
+    {
+        $registry = new TypedRegistry(new ArrayProvider(['key' => 'not-an-int']));
+        self::assertSame(99, $registry->getIntOr('key', 99));
+    }
+
     public function testGetBoolOrReturnsValue(): void
     {
         $registry = new TypedRegistry(new ArrayProvider(['key' => true]));
@@ -224,6 +230,12 @@ final class TypedRegistryTest extends TestCase
         self::assertFalse($registry->getBoolOr('key', false));
     }
 
+    public function testGetBoolOrReturnsDefaultOnTypeMismatch(): void
+    {
+        $registry = new TypedRegistry(new ArrayProvider(['key' => 1]));
+        self::assertFalse($registry->getBoolOr('key', false));
+    }
+
     public function testGetFloatOrReturnsValue(): void
     {
         $registry = new TypedRegistry(new ArrayProvider(['key' => 3.14]));
@@ -233,6 +245,12 @@ final class TypedRegistryTest extends TestCase
     public function testGetFloatOrReturnsDefaultOnMissing(): void
     {
         $registry = new TypedRegistry(new ArrayProvider([]));
+        self::assertSame(2.71, $registry->getFloatOr('key', 2.71));
+    }
+
+    public function testGetFloatOrReturnsDefaultOnTypeMismatch(): void
+    {
+        $registry = new TypedRegistry(new ArrayProvider(['key' => 42]));
         self::assertSame(2.71, $registry->getFloatOr('key', 2.71));
     }
 
@@ -300,6 +318,16 @@ final class TypedRegistryTest extends TestCase
         $registry->getStringList('key');
     }
 
+    public function testGetIntListThrowsOnNonArray(): void
+    {
+        $registry = new TypedRegistry(new ArrayProvider(['key' => 'not-an-array']));
+
+        $this->expectException(RegistryTypeError::class);
+        $this->expectExceptionMessage("[typed-registry] key 'key' must be list<int>, got 'not-an-array'");
+
+        $registry->getIntList('key');
+    }
+
     public function testGetIntListThrowsOnWrongElementType(): void
     {
         $registry = new TypedRegistry(new ArrayProvider(['key' => [1, 2, '3']]));
@@ -310,6 +338,16 @@ final class TypedRegistryTest extends TestCase
         $registry->getIntList('key');
     }
 
+    public function testGetBoolListThrowsOnNonArray(): void
+    {
+        $registry = new TypedRegistry(new ArrayProvider(['key' => 'not-an-array']));
+
+        $this->expectException(RegistryTypeError::class);
+        $this->expectExceptionMessage("[typed-registry] key 'key' must be list<bool>, got 'not-an-array'");
+
+        $registry->getBoolList('key');
+    }
+
     public function testGetBoolListThrowsOnWrongElementType(): void
     {
         $registry = new TypedRegistry(new ArrayProvider(['key' => [true, false, 1]]));
@@ -318,6 +356,16 @@ final class TypedRegistryTest extends TestCase
         $this->expectExceptionMessage("[typed-registry] key 'key[2]' must be bool, got 1");
 
         $registry->getBoolList('key');
+    }
+
+    public function testGetFloatListThrowsOnNonArray(): void
+    {
+        $registry = new TypedRegistry(new ArrayProvider(['key' => 'not-an-array']));
+
+        $this->expectException(RegistryTypeError::class);
+        $this->expectExceptionMessage("[typed-registry] key 'key' must be list<float>, got 'not-an-array'");
+
+        $registry->getFloatList('key');
     }
 
     public function testGetFloatListThrowsOnWrongElementType(): void
@@ -394,6 +442,16 @@ final class TypedRegistryTest extends TestCase
         $registry->getStringMap('key');
     }
 
+    public function testGetIntMapThrowsOnNonArray(): void
+    {
+        $registry = new TypedRegistry(new ArrayProvider(['key' => 'not-an-array']));
+
+        $this->expectException(RegistryTypeError::class);
+        $this->expectExceptionMessage("[typed-registry] key 'key' must be map<string,int>, got 'not-an-array'");
+
+        $registry->getIntMap('key');
+    }
+
     public function testGetIntMapThrowsOnNonIntValue(): void
     {
         $registry = new TypedRegistry(new ArrayProvider(['key' => ['a' => '123']]));
@@ -404,6 +462,16 @@ final class TypedRegistryTest extends TestCase
         $registry->getIntMap('key');
     }
 
+    public function testGetBoolMapThrowsOnNonArray(): void
+    {
+        $registry = new TypedRegistry(new ArrayProvider(['key' => 'not-an-array']));
+
+        $this->expectException(RegistryTypeError::class);
+        $this->expectExceptionMessage("[typed-registry] key 'key' must be map<string,bool>, got 'not-an-array'");
+
+        $registry->getBoolMap('key');
+    }
+
     public function testGetBoolMapThrowsOnNonBoolValue(): void
     {
         $registry = new TypedRegistry(new ArrayProvider(['key' => ['a' => 1]]));
@@ -412,6 +480,16 @@ final class TypedRegistryTest extends TestCase
         $this->expectExceptionMessage("[typed-registry] key 'key' must be map<string,bool>");
 
         $registry->getBoolMap('key');
+    }
+
+    public function testGetFloatMapThrowsOnNonArray(): void
+    {
+        $registry = new TypedRegistry(new ArrayProvider(['key' => 'not-an-array']));
+
+        $this->expectException(RegistryTypeError::class);
+        $this->expectExceptionMessage("[typed-registry] key 'key' must be map<string,float>, got 'not-an-array'");
+
+        $registry->getFloatMap('key');
     }
 
     public function testGetFloatMapThrowsOnNonFloatValue(): void
