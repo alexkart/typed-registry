@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TypedRegistry\Tests;
 
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use TypedRegistry\ArrayProvider;
 use TypedRegistry\RegistryTypeError;
@@ -303,7 +302,7 @@ final class TypedRegistryTest extends TestCase
         $registry = new TypedRegistry(new ArrayProvider(['key' => ['a' => 'value']]));
 
         $this->expectException(RegistryTypeError::class);
-        $this->expectExceptionMessage("[typed-registry] key 'key' must be list<string>");
+        $this->expectExceptionMessage("[typed-registry] key 'key' must be list<string>, got array");
 
         $registry->getStringList('key');
     }
@@ -427,7 +426,7 @@ final class TypedRegistryTest extends TestCase
         $registry = new TypedRegistry(new ArrayProvider(['key' => [0 => 'value']]));
 
         $this->expectException(RegistryTypeError::class);
-        $this->expectExceptionMessage("[typed-registry] key 'key' must be map<string,string>");
+        $this->expectExceptionMessage("[typed-registry] key 'key' must be map<string,string>, got array");
 
         $registry->getStringMap('key');
     }
@@ -437,7 +436,7 @@ final class TypedRegistryTest extends TestCase
         $registry = new TypedRegistry(new ArrayProvider(['key' => ['a' => 123]]));
 
         $this->expectException(RegistryTypeError::class);
-        $this->expectExceptionMessage("[typed-registry] key 'key' must be map<string,string>");
+        $this->expectExceptionMessage("[typed-registry] key 'key' must be map<string,string>, got array");
 
         $registry->getStringMap('key');
     }
@@ -457,7 +456,7 @@ final class TypedRegistryTest extends TestCase
         $registry = new TypedRegistry(new ArrayProvider(['key' => ['a' => '123']]));
 
         $this->expectException(RegistryTypeError::class);
-        $this->expectExceptionMessage("[typed-registry] key 'key' must be map<string,int>");
+        $this->expectExceptionMessage("[typed-registry] key 'key' must be map<string,int>, got array");
 
         $registry->getIntMap('key');
     }
@@ -477,7 +476,7 @@ final class TypedRegistryTest extends TestCase
         $registry = new TypedRegistry(new ArrayProvider(['key' => ['a' => 1]]));
 
         $this->expectException(RegistryTypeError::class);
-        $this->expectExceptionMessage("[typed-registry] key 'key' must be map<string,bool>");
+        $this->expectExceptionMessage("[typed-registry] key 'key' must be map<string,bool>, got array");
 
         $registry->getBoolMap('key');
     }
@@ -497,7 +496,7 @@ final class TypedRegistryTest extends TestCase
         $registry = new TypedRegistry(new ArrayProvider(['key' => ['a' => 123]]));
 
         $this->expectException(RegistryTypeError::class);
-        $this->expectExceptionMessage("[typed-registry] key 'key' must be map<string,float>");
+        $this->expectExceptionMessage("[typed-registry] key 'key' must be map<string,float>, got array");
 
         $registry->getFloatMap('key');
     }
