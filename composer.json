@@ -38,5 +38,10 @@
   "suggest": {
     "typed-registry/psl": "Optional adapter for shape/union types & coercion (future).",
     "typed-registry/webmozart": "Optional adapter for assertion-based guards (future)."
+  },
+  "scripts": {
+    "test": "phpunit",
+    "test:cov": "php -dzend_extension=/usr/lib/php/20230831/xdebug.so -dxdebug.mode=coverage vendor/bin/phpunit --coverage-text",
+    "phpstan": "phpstan analyse"
   }
 }

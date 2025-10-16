@@ -138,6 +138,26 @@ final class TypedRegistryTest extends TestCase
         self::assertNull($registry->getNullableBool('key'));
     }
 
+    public function testGetNullableIntThrowsOnWrongType(): void
+    {
+        $registry = new TypedRegistry(new ArrayProvider(['key' => '42']));
+
+        $this->expectException(RegistryTypeError::class);
+        $this->expectExceptionMessage("[typed-registry] key 'key' must be int|null, got '42'");
+
+        $registry->getNullableInt('key');
+    }
+
+    public function testGetNullableBoolThrowsOnWrongType(): void
+    {
+        $registry = new TypedRegistry(new ArrayProvider(['key' => 1]));
+
+        $this->expectException(RegistryTypeError::class);
+        $this->expectExceptionMessage("[typed-registry] key 'key' must be bool|null, got 1");
+
+        $registry->getNullableBool('key');
+    }
+
     public function testGetNullableFloatReturnsFloat(): void
     {
         $registry = new TypedRegistry(new ArrayProvider(['key' => 2.71]));
@@ -148,6 +168,16 @@ final class TypedRegistryTest extends TestCase
     {
         $registry = new TypedRegistry(new ArrayProvider(['key' => null]));
         self::assertNull($registry->getNullableFloat('key'));
+    }
+
+    public function testGetNullableFloatThrowsOnWrongType(): void
+    {
+        $registry = new TypedRegistry(new ArrayProvider(['key' => 42]));
+
+        $this->expectException(RegistryTypeError::class);
+        $this->expectExceptionMessage("[typed-registry] key 'key' must be float|null, got 42");
+
+        $registry->getNullableFloat('key');
     }
 
     // ==================== Getters with Defaults ====================
