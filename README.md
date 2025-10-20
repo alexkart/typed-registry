@@ -197,7 +197,52 @@ $registry = new TypedRegistry(new CompositeProvider([
 $port = $registry->getInt('app.port');
 ```
 
-### Example 3: Testing with ArrayProvider
+### Example 3: Laravel Environment Variables with Type Casting
+
+Laravel's `Illuminate\Support\Env` class handles booleans (`"true"` → `true`) and nulls (`"null"` → `null`), but numeric strings remain strings (`"8080"` → `"8080"`). If you need automatic type casting for numeric environment variables, here's a custom provider:
+
+```php
+use Illuminate\Support\Env;
+use TypedRegistry\Provider;
+use TypedRegistry\TypedRegistry;
+
+final class EnvProvider implements Provider
+{
+    public function get(string $key): mixed
+    {
+        $value = Env::get($key);
+
+        // If not a string, return as-is (booleans/nulls already handled by Env)
+        if (!is_string($value)) {
+            return $value;
+        }
+
+        // Only cast numeric strings
+        if (!is_numeric($value)) {
+            return $value;
+        }
+
+        // Cast to int if it represents a whole number
+        if ((string) (int) $value === $value) {
+            return (int) $value;
+        }
+
+        // Cast to float for decimals and scientific notation
+        return (float) $value;
+    }
+}
+
+// Usage
+$env = new TypedRegistry(new EnvProvider());
+$debug = $env->getBool('APP_DEBUG');      // "true" → bool(true)
+$port = $env->getInt('APP_PORT');         // "8080" → int(8080)
+$timeout = $env->getFloat('TIMEOUT');     // "2.5" → float(2.5)
+$name = $env->getString('APP_NAME');      // "Laravel" → "Laravel"
+```
+
+> **Note:** This adapter performs type coercion, which differs from typed-registry's strict validation philosophy. Use it when you trust your environment variable format. Alternatively, the **`alexkart/typed-registry-laravel`** package (coming soon) provides this and other Laravel-specific integrations out of the box.
+
+### Example 4: Testing with ArrayProvider
 
 ```php
 use PHPUnit\Framework\TestCase;
@@ -283,6 +328,7 @@ composer phpstan
 
 Future optional packages (not required for core usage):
 
+- **`alexkart/typed-registry-laravel`** - Laravel-specific providers (Env with casting, Config, etc.) and service provider
 - **`alexkart/typed-registry-psl`** - Shape/union types via PHP Standard Library Types
 - **`alexkart/typed-registry-schema`** - Schema validation and DTO mapping
 
