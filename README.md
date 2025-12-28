@@ -240,7 +240,7 @@ $timeout = $env->getFloat('TIMEOUT');     // "2.5" → float(2.5)
 $name = $env->getString('APP_NAME');      // "Laravel" → "Laravel"
 ```
 
-> **Note:** This adapter performs type coercion, which differs from typed-registry's strict validation philosophy. Use it when you trust your environment variable format. Alternatively, the **`alexkart/typed-registry-laravel`** package (coming soon) provides this and other Laravel-specific integrations out of the box.
+> **Note:** This adapter performs type coercion, which differs from typed-registry's strict validation philosophy. Use it when you trust your environment variable format. Alternatively, the **[`alexkart/typed-registry-laravel`](https://github.com/alexkart/typed-registry-laravel)** package provides this and other Laravel-specific integrations out of the box, including `TypedEnv` and `TypedConfig` facades.
 
 ### Example 4: Testing with ArrayProvider
 
@@ -324,11 +324,14 @@ composer phpstan
 - PHP Version: ≥8.3
 - Dependencies: Zero (core package)
 
-## Roadmap
+## Ecosystem
 
-Future optional packages (not required for core usage):
+Optional packages that extend typed-registry:
 
-- **`alexkart/typed-registry-laravel`** - Laravel-specific providers (Env with casting, Config, etc.) and service provider
+- **[`alexkart/typed-registry-laravel`](https://github.com/alexkart/typed-registry-laravel)** ✅ **Available** - Laravel-specific providers (`EnvProvider` with type casting, `ConfigProvider`) plus `TypedEnv` and `TypedConfig` facades
+
+Future packages (not required for core usage):
+
 - **`alexkart/typed-registry-psl`** - Shape/union types via PHP Standard Library Types
 - **`alexkart/typed-registry-schema`** - Schema validation and DTO mapping
 
